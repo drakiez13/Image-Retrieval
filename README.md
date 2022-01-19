@@ -2,9 +2,9 @@
 
 Final Project for CS336
 
-## 1. Authors
+## Authors
 
-| N.O | MSSV     | Họ và tên                | Lớp      |
+| No  | ID       | Name                     | Class    |
 | --- | -------- | ------------------------ | -------- |
 | 1   | 19520951 | Trần Quốc Thắng          | KHTN2019 |
 | 2   | 19521599 | Châu Ngọc Huy            | KHTN2019 |

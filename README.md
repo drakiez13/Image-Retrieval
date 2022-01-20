@@ -13,8 +13,34 @@ Final Project for CS336
 
 ## Usage
 
+### Run from remote docker image
+
+Pull lastest image from docker hub and run it
+
 ```bash
-# You may be asked for logging to docker
+# You may be asked for logging to dockerhub
+docker pull drakiez92/image-retrieval
 docker run -p 80:8080 -l image-retrieval drakiez92/image-retrieval
 ```
 > Note: It will take a while on first run to download all images data
+
+### Build and run from source
+
+Clone source code from github
+
+```bash
+git clone https://github.com/drakiez92/Image-Retrieval
+```
+
+To prevent re-downloading new images data every image-build, you should download the data first.
+
+```bash
+python get_data.py
+```
+
+After that, build docker image and run it.
+
+```bash
+docker build -t image-retrieval .
+docker run -p 80:8080 -l image-retrieval image-retrieval
+```

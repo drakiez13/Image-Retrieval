@@ -12,9 +12,13 @@ def get_oxbuild_data():
     if not os.path.exists(oxbuild_path):
         print('[INFO] Oxbuild images data does not exist! Download new data')
 
-        os.makedirs(oxbuild_path)
+        try:
+            gdown.download(id=oxbuild_id, output=oxbuild_tgz, quiet=False)
+        except:
+            print('[ERROR] An error occurs when downloading data')
+            exit(-1)
 
-        gdown.download(id=oxbuild_id, output=oxbuild_tgz, quiet=False)
+        os.makedirs(oxbuild_path)
 
         oxbuild = tarfile.open(oxbuild_tgz)
         oxbuild.extractall(path=oxbuild_path)

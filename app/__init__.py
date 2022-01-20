@@ -1,4 +1,5 @@
-from flask import Flask, send_file
+from flask import Flask, send_file, jsonify, request
+from app.search import get_similar
 
 app = Flask(__name__,
             static_url_path='/',
@@ -8,6 +9,11 @@ app = Flask(__name__,
 def index():
     return send_file('public/index.html')
 
-@app.route('/api/search')
+@app.route('/api/search', methods=['POST'])
 def search():
-    pass
+    if request.is_json:
+        return jsonify({
+            'images': get_similar(),
+        })
+    else:
+        return jsonify({'message': 'bad request'}), 400

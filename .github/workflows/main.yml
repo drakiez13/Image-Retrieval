@@ -26,5 +26,3 @@ jobs:
           file: ./Dockerfile
           push: true
           tag: ${{ secrets.DOCKER_HUB_USERNAME }}/image-trieval:latest
-          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/image-trieval:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/image-trieval:buildcache,mode=max

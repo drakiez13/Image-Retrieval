@@ -15,6 +15,7 @@ _mailinglist
 .tox/
 .cache/
 .pytest_cache/
+__pycache__/
 .idea/
 docs/_build/
 .vscode
@@ -26,3 +27,5 @@ htmlcov/
 *,cover
 
 .devcontainer
+
+images

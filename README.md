@@ -2,6 +2,14 @@
 
 Final Project for CS336
 
+## Usage
+
+```bash
+# You may be asked for logging to docker
+docker run -p 80:8080 -l image-retrieval drakiez92/image-retrieval
+```
+> Note: It will take a while on first run to download all images data
+
 ## Authors
 
 | No  | ID       | Name                     | Class    |

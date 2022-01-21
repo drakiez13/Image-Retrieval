@@ -14,18 +14,20 @@ def get_oxbuild_data():
 
         try:
             gdown.download(id=oxbuild_id, output=oxbuild_tgz, quiet=False)
+
+            os.makedirs(oxbuild_path, exist_ok=True)
+
+            oxbuild = tarfile.open(oxbuild_tgz)
+            oxbuild.extractall(path=oxbuild_path)
+
+            os.remove(oxbuild_tgz)
         except:
             print('[ERROR] An error occurs when downloading data')
             exit(-1)
 
-        os.makedirs(oxbuild_path)
-
-        oxbuild = tarfile.open(oxbuild_tgz)
-        oxbuild.extractall(path=oxbuild_path)
-
-        os.remove(oxbuild_tgz)
+        
     else:
-        print('[INFO] Data is available ^_^')
+        print('[OK] Data is available ^_^')
 
 if __name__ == '__main__':
     get_oxbuild_data()

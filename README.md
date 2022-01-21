@@ -24,6 +24,16 @@ docker run -p 80:8080 -l image-retrieval drakiez92/image-retrieval
 ```
 > Note: It will take a while on first run to download all images data
 
+You may want to use volume to keep images data over time
+
+```bash
+docker volume create image-retrieval-images
+docker pull drakiez92/image-retrieval
+docker run -p 80:8080 -l image-retrieval \
+    --mount source=image-retrieval-images,target=/app/images \
+    drakiez92/image-retrieval
+```
+
 ### Build and run from source
 
 Clone source code from github

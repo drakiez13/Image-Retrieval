@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Crop.css';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
@@ -21,6 +21,7 @@ const Input = styled('input')({
 });
 
 const Cropper = () => {
+
 
     const itemData = [
         {
@@ -71,6 +72,7 @@ const Cropper = () => {
     const [image, setImage] = useState(null)
     const [crop, setCrop] = useState({ aspect: 16 / 9 });
     const [result, setResult] = useState(src)
+    const [images, setImages] = useState({})
 
     function getCroppedImg() {
         const canvas = document.createElement("canvas");
@@ -101,11 +103,22 @@ const Cropper = () => {
         //     setResult(blob)
         // })
     }
+    useEffect(() => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(result)
+        };
+        fetch('https://reqres.in/api/posts', requestOptions)
+            .then(response => response.json())
+            .then(data => setImages(data));
+    }, [result])
     return (
         <div className="container">
+
             <div className='page1'>
                 <div className='head'>
-                    {/* <img src='./YoninSearch.png' alt='logo'/> */}
+
                     <h1>YONIN</h1>
                 </div>
                 <div className='intro'>
@@ -129,18 +142,22 @@ const Cropper = () => {
                         {/* <button className="btn-danger" onClick={getCroppedImg}>Crop Image</button> */}
                         <Button variant="contained" onClick={getCroppedImg} style={{ marginBottom: 40 }}>Search </Button>
                     </div>}
-                    <ImageList sx={{ width: 650, height: 650, alignItems: 'center', mx: 'auto' }} cols={3}  >
-                        {itemData.map((item) => (
-                            <ImageListItem key={item.img}>
-                                <img
-                                    src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                                    srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                                    alt={item.title}
-                                    loading="lazy"
-                                />
-                            </ImageListItem>
-                        ))}
-                    </ImageList>
+                    {images &&
+                        <div>
+                            <ImageList sx={{ width: 650, height: 650, alignItems: 'center', mx: 'auto', mt: '40px' }} cols={3}  >
+                                {itemData.map((item) => (
+                                    <ImageListItem key={item.img}>
+                                        <img
+                                            src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
+                                            srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                                            alt={item.title}
+                                            loading="lazy"
+                                        />
+                                    </ImageListItem>
+                                ))}
+                            </ImageList>
+                        </div>}
+
                 </div>
 
             </div>

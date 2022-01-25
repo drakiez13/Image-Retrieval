@@ -1,0 +1,94 @@
+.container{
+  height: 100%;
+}
+.page1{
+  background-image: url(https://wallpapercave.com/wp/wp2737816.jpg);
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+h1{
+  color: #fff;
+  margin-left: 20px;
+  font-family: 'Playfair Display', serif;
+  font-size: 50px;
+}
+.intro{
+  position: absolute;
+  top: 300px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  
+  margin: auto;
+  
+  text-align: center;
+}
+p{
+ 
+  color: #fff;
+  font-size: 30px;
+}
+.page2{
+  background-image: url(https://cdn.wallpapersafari.com/43/13/Rhn6aP.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 200%;
+  margin-top: 8px;
+  
+}
+.intro2{
+  position: absolute;
+  top: 1200px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  
+  margin: auto;
+  
+  text-align: center;
+}
+input{
+  size: 50;
+  
+}
+.img-cropped {
+    height: 90px;
+    width: 160px;
+  }
+.origin-img{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 360px;
+  width: 640px;
+  border: 3px solid rgb(133, 167, 196);
+  border-radius: 5px;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+.inp-img{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  size: 50;
+  height: 50px;
+  margin-top: 20px;
+}
+
+.MuiBox-root css-dnjqbo{
+  margin: 20px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  
+  padding: 10px;
+}
+.grid-item {
+  height: auto;
+  display: block;
+}

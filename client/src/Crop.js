@@ -23,56 +23,56 @@ const Input = styled('input')({
 const Cropper = () => {
 
 
-    const itemData = [
-        {
-            img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-            title: 'Breakfast',
-            rows: 2,
-            cols: 2,
-        },
-        {
-            img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-            title: 'Burger',
-        },
-        {
-            img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-            title: 'Camera',
-        },
-        {
-            img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-            title: 'Coffee',
-            cols: 2,
-        },
-        {
-            img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-            title: 'Breakfast',
-            rows: 2,
-            cols: 2,
-        },
-        {
-            img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-            title: 'Burger',
-        },
-        {
-            img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-            title: 'Camera',
-        },
-        {
-            img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-            title: 'Coffee',
-            cols: 2,
-        }
-    ]
-
+    // const itemData = [
+    //     {
+    //         img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
+    //         title: 'Breakfast',
+    //         rows: 2,
+    //         cols: 2,
+    //     },
+    //     {
+    //         img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
+    //         title: 'Burger',
+    //     },
+    //     {
+    //         img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
+    //         title: 'Camera',
+    //     },
+    //     {
+    //         img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
+    //         title: 'Coffee',
+    //         cols: 2,
+    //     },
+    //     {
+    //         img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
+    //         title: 'Breakfast',
+    //         rows: 2,
+    //         cols: 2,
+    //     },
+    //     {
+    //         img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
+    //         title: 'Burger',
+    //     },
+    //     {
+    //         img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
+    //         title: 'Camera',
+    //     },
+    //     {
+    //         img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
+    //         title: 'Coffee',
+    //         cols: 2,
+    //     }
+    // ]
+    
     const [src, selectFile] = useState(null)
     const handleFileChange = e => {
         selectFile(URL.createObjectURL(e.target.files[0]));
     }
-
+    const [flag,setFlag]=useState(true)
     const [image, setImage] = useState(null)
     const [crop, setCrop] = useState({ aspect: 16 / 9 });
     const [result, setResult] = useState(src)
-    const [images, setImages] = useState({})
+    const [images, setImages] = useState([])
 
     function getCroppedImg() {
         const canvas = document.createElement("canvas");
@@ -82,7 +82,7 @@ const Cropper = () => {
         canvas.height = crop.height;
         const ctx = canvas.getContext("2d");
 
-
+        setFlag(!flag)
 
         ctx.drawImage(
             image,
@@ -97,7 +97,7 @@ const Cropper = () => {
         );
         const base64Image = canvas.toDataURL("image/jpeg");
         setResult(base64Image)
-        console.log(result)
+        // console.log(result)
         // canvas.toBlob(blob=>{
         //     console.log(blob)
         //     setResult(blob)
@@ -109,10 +109,13 @@ const Cropper = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(result)
         };
-        fetch('https://reqres.in/api/posts', requestOptions)
+        fetch('/api/search', requestOptions)
             .then(response => response.json())
-            .then(data => setImages(data));
-    }, [result])
+            .then(data => {setImages(data.images)
+                console.log(data)});
+            
+    }, [flag])
+    
     return (
         <div className="container">
 
@@ -144,13 +147,13 @@ const Cropper = () => {
                     </div>}
                     {images &&
                         <div>
-                            <ImageList sx={{ width: 650, height: 650, alignItems: 'center', mx: 'auto', mt: '40px' }} cols={3}  >
-                                {itemData.map((item) => (
-                                    <ImageListItem key={item.img}>
+                            <ImageList sx={{ width: 800, height: 650, alignItems: 'center', mx: 'auto', mt: '40px' }} cols={3}  >
+                                {images.map((item) => (
+                                    <ImageListItem key={item}>
                                         <img
-                                            src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                                            srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                                            alt={item.title}
+                                            src={`/images/oxbuild_images/${item}`}
+                                            srcSet={`/images/oxbuild_images/${item}`}
+                                            alt={`${item}`}
                                             loading="lazy"
                                         />
                                     </ImageListItem>
@@ -161,28 +164,7 @@ const Cropper = () => {
                 </div>
 
             </div>
-            {/* <div className='footer'>
-                <ul>
-                    <li>Tran Quoc Thang</li>
-                    <li>Tran Cong Minh</li>
-                    <li>Chau Ngoc Huy</li>
-                    <li>Phan Tien Ngoc</li>
-                </ul>
-            </div> */}
-
-            {/* </div>
-            <div className="btn-chooseImg">
-                
-            </div>
-            {src && <div >
-                <ReactCrop src={src} onImageLoaded={setImage} crop={crop} onChange={setCrop} className="origin-img" />
-                <button className="btn-danger" onClick={getCroppedImg}>Crop Image</button>
-            </div>}
-            {result && <div>
-                <img src={result} alt="Crop Image" className="img-cropped" />
-            </div>} */}
-            {/*  */}
-        </div >
+        </div>
     )
 }
 

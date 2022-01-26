@@ -16,7 +16,8 @@ def index():
 @app.route('/api/search', methods=['POST'])
 def search():
     if request.is_json:
-        result, time = get_similar(request.get_json()['image'])
+        print(request.get_json()['image'][23:])
+        result, time = get_similar(request.get_json()['image'][23:])
 
         return jsonify({
             'images': result,

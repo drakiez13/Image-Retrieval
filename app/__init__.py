@@ -1,5 +1,9 @@
+from unittest import result
 from flask import Flask, send_file, jsonify, request
 from app.search import get_similar
+from app import extract_vector
+
+extract_vector.init()
 
 app = Flask(__name__,
             static_url_path='/',
@@ -12,8 +16,11 @@ def index():
 @app.route('/api/search', methods=['POST'])
 def search():
     if request.is_json:
+        result, time = get_similar(request.get_json()['image'])
+
         return jsonify({
-            'images': get_similar(),
+            'images': result,
+            'time': time
         })
     else:
         return jsonify({'message': 'bad request'}), 400

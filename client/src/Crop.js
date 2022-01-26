@@ -68,7 +68,8 @@ const Cropper = () => {
     const handleFileChange = e => {
         selectFile(URL.createObjectURL(e.target.files[0]));
     }
-    const [flag,setFlag]=useState(true)
+    // const [flag,setFlag]=useState(true)
+    var flag=true
     const [image, setImage] = useState(null)
     const [crop, setCrop] = useState({ aspect: 16 / 9 });
     const [result, setResult] = useState(src)
@@ -82,8 +83,8 @@ const Cropper = () => {
         canvas.height = crop.height;
         const ctx = canvas.getContext("2d");
 
-        setFlag(!flag)
-
+        // setFlag(!flag)
+        flag=!flag
         ctx.drawImage(
             image,
             crop.x * scaleX,
@@ -97,7 +98,7 @@ const Cropper = () => {
         );
         const base64Image = canvas.toDataURL("image/jpeg");
         setResult(base64Image)
-        // console.log(result)
+        console.log(base64Image)
         // canvas.toBlob(blob=>{
         //     console.log(blob)
         //     setResult(blob)
@@ -114,7 +115,7 @@ const Cropper = () => {
             .then(data => {setImages(data.images)
                 console.log(data)});
             
-    }, [flag])
+    }, [])
     
     return (
         <div className="container">

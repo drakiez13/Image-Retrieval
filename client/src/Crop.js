@@ -21,58 +21,12 @@ const Input = styled('input')({
 });
 
 const Cropper = () => {
-
-
-    // const itemData = [
-    //     {
-    //         img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-    //         title: 'Breakfast',
-    //         rows: 2,
-    //         cols: 2,
-    //     },
-    //     {
-    //         img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-    //         title: 'Burger',
-    //     },
-    //     {
-    //         img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    //         title: 'Camera',
-    //     },
-    //     {
-    //         img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-    //         title: 'Coffee',
-    //         cols: 2,
-    //     },
-    //     {
-    //         img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-    //         title: 'Breakfast',
-    //         rows: 2,
-    //         cols: 2,
-    //     },
-    //     {
-    //         img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-    //         title: 'Burger',
-    //     },
-    //     {
-    //         img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    //         title: 'Camera',
-    //     },
-    //     {
-    //         img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-    //         title: 'Coffee',
-    //         cols: 2,
-    //     }
-    // ]
-    
     const [src, selectFile] = useState(null)
     const handleFileChange = e => {
         selectFile(URL.createObjectURL(e.target.files[0]));
     }
-    // const [flag,setFlag]=useState(true)
-    var flag=true
     const [image, setImage] = useState(null)
     const [crop, setCrop] = useState({ aspect: 16 / 9 });
-    const [result, setResult] = useState(src)
     const [images, setImages] = useState([])
 
     function getCroppedImg() {
@@ -83,8 +37,6 @@ const Cropper = () => {
         canvas.height = crop.height;
         const ctx = canvas.getContext("2d");
 
-        // setFlag(!flag)
-        flag=!flag
         ctx.drawImage(
             image,
             crop.x * scaleX,
@@ -97,25 +49,20 @@ const Cropper = () => {
             crop.height
         );
         const base64Image = canvas.toDataURL("image/jpeg");
-        setResult(base64Image)
         console.log(base64Image)
-        // canvas.toBlob(blob=>{
-        //     console.log(blob)
-        //     setResult(blob)
-        // })
-    }
-    useEffect(() => {
+        
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(result)
+            body: JSON.stringify({
+                'image': base64Image
+            })
         };
         fetch('/api/search', requestOptions)
             .then(response => response.json())
             .then(data => {setImages(data.images)
                 console.log(data)});
-            
-    }, [])
+    }
     
     return (
         <div className="container">

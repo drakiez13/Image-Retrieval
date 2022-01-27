@@ -37,7 +37,7 @@ p{
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 200%;
+  height: 100%;
   margin-top: 8px;
   
 }
@@ -84,13 +84,17 @@ input{
   margin: 20px;
 }
 
-.grid-container {
-  display: grid;
-  grid-template-columns: auto auto;
+/* page2 */
+
+.left{
+  width: 50%;
+  height: 100%;
+  float: left;
+  text-align: center;
   
-  padding: 10px;
 }
-.grid-item {
-  height: auto;
-  display: block;
+.right{
+  width: 50%;
+  height: 100%;
+  float: right;
 }

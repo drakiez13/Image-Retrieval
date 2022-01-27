@@ -22,58 +22,17 @@ const Input = styled('input')({
 
 const Cropper = () => {
 
-
-    // const itemData = [
-    //     {
-    //         img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-    //         title: 'Breakfast',
-    //         rows: 2,
-    //         cols: 2,
-    //     },
-    //     {
-    //         img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-    //         title: 'Burger',
-    //     },
-    //     {
-    //         img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    //         title: 'Camera',
-    //     },
-    //     {
-    //         img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-    //         title: 'Coffee',
-    //         cols: 2,
-    //     },
-    //     {
-    //         img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-    //         title: 'Breakfast',
-    //         rows: 2,
-    //         cols: 2,
-    //     },
-    //     {
-    //         img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-    //         title: 'Burger',
-    //     },
-    //     {
-    //         img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    //         title: 'Camera',
-    //     },
-    //     {
-    //         img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-    //         title: 'Coffee',
-    //         cols: 2,
-    //     }
-    // ]
-    
     const [src, selectFile] = useState(null)
     const handleFileChange = e => {
         selectFile(URL.createObjectURL(e.target.files[0]));
     }
-    // const [flag,setFlag]=useState(true)
-    var flag=true
+
+    var flag = true
+    const [time, setTime] = useState(null)
     const [image, setImage] = useState(null)
-    const [crop, setCrop] = useState({ aspect: 16 / 9 });
-    const [result, setResult] = useState(src)
-    const [images, setImages] = useState([])
+    const [crop, setCrop] = useState({});
+    const [result, setResult] = useState()
+    const [images, setImages] = useState()
 
     function getCroppedImg() {
         const canvas = document.createElement("canvas");
@@ -84,7 +43,7 @@ const Cropper = () => {
         const ctx = canvas.getContext("2d");
 
         // setFlag(!flag)
-        flag=!flag
+        flag = !flag
         ctx.drawImage(
             image,
             crop.x * scaleX,
@@ -98,25 +57,34 @@ const Cropper = () => {
         );
         const base64Image = canvas.toDataURL("image/jpeg");
         setResult(base64Image)
-        console.log(base64Image)
-        // canvas.toBlob(blob=>{
-        //     console.log(blob)
-        //     setResult(blob)
-        // })
-    }
-    useEffect(() => {
+
+        const img = { 'image': result }
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(result)
+            body: JSON.stringify(img)
         };
         fetch('/api/search', requestOptions)
             .then(response => response.json())
-            .then(data => {setImages(data.images)
-                console.log(data)});
-            
-    }, [])
-    
+            .then(data => {
+                setImages(data.images)
+                setTime(data.time)
+                console.log(data)
+            });
+    }
+    // useEffect(() => {
+    //     const requestOptions = {
+    //         method: 'POST',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify(result)
+    //     };
+    //     fetch('/api/search', requestOptions)
+    //         .then(response => response.json())
+    //         .then(data => {setImages(data.images)
+    //             console.log(data)});
+
+    // }, [])
+
     return (
         <div className="container">
 
@@ -131,10 +99,8 @@ const Cropper = () => {
                 </div>
             </div>
             <div className='page2'>
-
-                <div className='intro2' >
-                    <h2 style={{ color: 'rgb(27, 127, 241)', fontSize: 32 }}>Choose Image from your device</h2>
-                    {/* <input accept='image/*' type='file' onChange={handleFileChange} className='inp-img' /> */}
+                <div className='left'>
+                    <h2 style={{ color: 'rgb(27, 127, 241)', fontSize: 32, marginTop: 100 }}>Choose Image from your device</h2>
                     <label htmlFor="contained-button-file">
                         <Input accept="image/*" id="contained-button-file" type="file" onChange={handleFileChange} />
                         <Button variant="contained" component="span">
@@ -143,27 +109,30 @@ const Cropper = () => {
                     </label>
                     {src && <div className='ori-img-cover' >
                         <ReactCrop src={src} onImageLoaded={setImage} crop={crop} onChange={setCrop} className="origin-img" />
-                        {/* <button className="btn-danger" onClick={getCroppedImg}>Crop Image</button> */}
                         <Button variant="contained" onClick={getCroppedImg} style={{ marginBottom: 40 }}>Search </Button>
                     </div>}
+                    {time && <h4>Time query: {time}</h4>}
+                </div>
+                <div className='right'>
                     {images &&
                         <div>
-                            <ImageList sx={{ width: 800, height: 650, alignItems: 'center', mx: 'auto', mt: '40px' }} cols={3}  >
+                            
+                            <ImageList sx={{ width: 600, height: 650, alignItems: 'center', mx: 'auto', mt: '80px',background:'white' ,border:'1px solid rgb(133, 167, 196)'}} cols={3}  >
                                 {images.map((item) => (
                                     <ImageListItem key={item}>
                                         <img
                                             src={`/images/oxbuild_images/${item}`}
                                             srcSet={`/images/oxbuild_images/${item}`}
                                             alt={`${item}`}
+                                            title={`${item}`}
                                             loading="lazy"
                                         />
                                     </ImageListItem>
                                 ))}
                             </ImageList>
                         </div>}
-
                 </div>
-
+            
             </div>
         </div>
     )

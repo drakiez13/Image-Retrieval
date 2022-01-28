@@ -124,7 +124,7 @@ const Cropper = () => {
                                             src={`/images/oxbuild_images/${item}`}
                                             srcSet={`/images/oxbuild_images/${item}`}
                                             alt={`${item}`}
-                                            title={`${item}`}
+                                           
                                             loading="lazy"
                                         />
                                     </ImageListItem>

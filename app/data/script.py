@@ -1,7 +1,7 @@
 import json
 import os
 
-with open('oxbuild_index.json', 'r') as f:
+with open('data_paris_vgg16_pretrain.json', 'r') as f:
     data = json.load(f)
 
 new_path = []
@@ -12,5 +12,5 @@ print(new_path)
 
 data['paths'] = new_path
 
-with open('oxbuild_index_2.json', 'w') as f:
+with open('paris_index.json', 'w') as f:
     json.dump(data, f)

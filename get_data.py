@@ -4,12 +4,12 @@ import os
 
 def get_oxbuild_data():
     oxbuild_id = '1z3nQ_p3PrYxbk0aaViTaUysPpB7Re2ER'
-    oxbuild_path = 'app/public/images/oxbuild_images'
+    oxbuild_path = 'app/public/images'
     oxbuild_tgz = 'oxbuild.tgz'
 
     print('[INFO] Checking for Oxbuild data...')
 
-    if not os.path.exists(oxbuild_path):
+    if not os.path.exists(oxbuild_path+'/all_souls_000000.jpg'):
         print('[INFO] Oxbuild images data does not exist! Download new data')
 
         try:
@@ -25,9 +25,37 @@ def get_oxbuild_data():
             print('[ERROR] An error occurs when downloading data')
             exit(-1)
 
-        
     else:
-        print('[OK] Data is available ^_^')
+        print('[OK] Data Oxbuild is available ^_^')
+
+
+def get_paris_data():
+    paris_id = '1-302BDlFHcjfv5Bc4YjYYXMCsd9oifbH'
+    paris_tgz = 'paris.tgz'
+    paris_path = 'app/public/images'
+
+    print('[INFO] Checking for Paris data...')
+
+    if not os.path.exists(paris_path+'/paris_defense_000000.jpg'):
+        print('[INFO] Paris images data does not exist! Download new data')
+
+        try:
+            gdown.download(id=paris_id, output=paris_tgz, quiet=False)
+
+            os.makedirs(paris_path, exist_ok=True)
+
+            paris = tarfile.open(paris_tgz)
+            paris.extractall(path=paris_path)
+
+            # os.remove(paris_tgz)
+        except:
+            print('[ERROR] An error occurs when downloading data')
+            exit(-1)
+
+    else:
+        print('[OK] Data Paris is available ^_^')
+
 
 if __name__ == '__main__':
     get_oxbuild_data()
+    get_paris_data()

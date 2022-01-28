@@ -122,8 +122,6 @@ def init_network(params):
     # initialize local whitening
     if local_whitening:
         lwhiten = nn.Linear(dim, dim, bias=True)
-        # TODO: lwhiten with possible dimensionality reduce
-
         if pretrained:
             lw = architecture
             if lw in L_WHITENING:
@@ -144,8 +142,6 @@ def init_network(params):
     if regional:
         rpool = pool
         rwhiten = nn.Linear(dim, dim, bias=True)
-        # TODO: rwhiten with possible dimensionality reduce
-
         if pretrained:
             rw = '{}-{}-r'.format(architecture, pooling)
             if rw in R_WHITENING:
@@ -162,8 +158,6 @@ def init_network(params):
     # initialize whitening
     if whitening:
         whiten = nn.Linear(dim, dim, bias=True)
-        # TODO: whiten with possible dimensionality reduce
-
         if pretrained:
             w = architecture
             if local_whitening:
@@ -207,17 +201,6 @@ def init_network(params):
     return net
 
 def img_to_array(img, data_format='channels_last', dtype='float32'):
-    """Converts a PIL Image instance to a Numpy array.
-    # Arguments
-        img: PIL Image instance.
-        data_format: Image data format,
-            either "channels_first" or "channels_last".
-        dtype: Dtype to use for the returned array.
-    # Returns
-        A 3D Numpy array.
-    # Raises
-        ValueError: if invalid `img` or `data_format` is passed.
-    """
     if data_format not in {'channels_first', 'channels_last'}:
         raise ValueError('Unknown data_format: %s' % data_format)
     # Numpy array x has format (height, width, channel)
@@ -250,10 +233,12 @@ def extract_vector(model, img):
     return vector
 
 net = None
-data = None
+data_oxbuild = None
+data_paris = None
 
 def init():
-    global data 
+    global data_oxbuild
+    global data_paris
     global net
 
     state = torch.load('app/data/weights.pth')
@@ -272,12 +257,20 @@ def init():
     net.load_state_dict(state['state_dict'])
 
     with open('app/data/oxbuild_index.json', 'r') as f:
-        data = json.load(f)
+        data_oxbuild = json.load(f)
+    with open('app/data/paris_index.json', 'r') as f:
+        data_paris = json.load(f)
 
-def search(img, k=10):
+def search(img, k=10, dataset = 'oxbuild'):
     query_vector = extract_vector(net, img)
 
-    distance = [spatial.distance.cosine(i, query_vector) for i in data['vectors']]
-    ids = np.argsort(distance)[:k]
-    results = [data['paths'][id] for id in ids]
+    if dataset == 'oxbuild':
+        distance = [spatial.distance.cosine(i, query_vector) for i in data_oxbuild['vectors']]
+        ids = np.argsort(distance)[:k]
+        results = [data_oxbuild['paths'][id] for id in ids]
+    else:
+        distance = [spatial.distance.cosine(i, query_vector) for i in data_paris['vectors']]
+        ids = np.argsort(distance)[:k]
+        results = [data_paris['paths'][id] for id in ids]
+    
     return results

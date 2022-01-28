@@ -29,7 +29,7 @@ You may want to use volume to keep images data over time
 ```bash
 docker volume create image-retrieval-images
 docker pull drakiez92/image-retrieval
-docker run -p 80:80 --name image-retrieval \
+docker run -p 80:8080 --name image-retrieval \
     --mount source=image-retrieval-images,target=/app/app/public/images \
     drakiez92/image-retrieval
 ```

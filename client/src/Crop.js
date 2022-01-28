@@ -72,16 +72,16 @@ const Cropper = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(img)
         };
-        var http='as'
+        var http='tmp'
         if(value=='Paris')
         {
-             http='api/search/paris'
+             http='/api/search/paris'
         }
         else {
-             http='api/search/oxbuild'
+             http='/api/search/oxbuild'
         }
         console.log(http)
-        fetch('api/search', requestOptions)
+        fetch(http, requestOptions)
             .then(response => response.json())
             .then(data => {
                 setImages(data.images)

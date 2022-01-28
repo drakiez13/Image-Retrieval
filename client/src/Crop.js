@@ -21,11 +21,15 @@ const Input = styled('input')({
 });
 
 const Cropper = () => {
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
     const [src, selectFile] = useState(null)
     const handleFileChange = e => {
         selectFile(URL.createObjectURL(e.target.files[0]));
     }
+<<<<<<< HEAD
 
     var flag = true
     const [time, setTime] = useState(null)
@@ -33,6 +37,11 @@ const Cropper = () => {
     const [crop, setCrop] = useState({});
     const [result, setResult] = useState()
     const [images, setImages] = useState()
+=======
+    const [image, setImage] = useState(null)
+    const [crop, setCrop] = useState({ aspect: 16 / 9 });
+    const [images, setImages] = useState([])
+>>>>>>> main
 
     function getCroppedImg() {
         const canvas = document.createElement("canvas");
@@ -42,8 +51,11 @@ const Cropper = () => {
         canvas.height = crop.height;
         const ctx = canvas.getContext("2d");
 
+<<<<<<< HEAD
         // setFlag(!flag)
         flag = !flag
+=======
+>>>>>>> main
         ctx.drawImage(
             image,
             crop.x * scaleX,
@@ -56,6 +68,7 @@ const Cropper = () => {
             crop.height
         );
         const base64Image = canvas.toDataURL("image/jpeg");
+<<<<<<< HEAD
         setResult(base64Image)
 
         const img = { 'image': result }
@@ -85,6 +98,23 @@ const Cropper = () => {
 
     // }, [])
 
+=======
+        console.log(base64Image)
+        
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                'image': base64Image
+            })
+        };
+        fetch('/api/search', requestOptions)
+            .then(response => response.json())
+            .then(data => {setImages(data.images)
+                console.log(data)});
+    }
+    
+>>>>>>> main
     return (
         <div className="container">
 

@@ -11,7 +11,7 @@ def get_similar(image_endcoded):
     img = Image.open(buf)
 
     begin = time.time()
-    result = search(img, 10)
+    result = search(img, 50)
     end = time.time()
 
     return result, end - begin

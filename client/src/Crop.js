@@ -21,7 +21,6 @@ const Input = styled('input')({
 });
 
 const Cropper = () => {
-
     const [src, selectFile] = useState(null)
     const handleFileChange = e => {
         selectFile(URL.createObjectURL(e.target.files[0]));

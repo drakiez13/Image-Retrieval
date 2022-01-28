@@ -20,7 +20,7 @@ Pull lastest image from docker hub and run it
 ```bash
 # You may be asked for logging to dockerhub
 docker pull drakiez92/image-retrieval
-docker run -p 80:80 --name image-retrieval drakiez92/image-retrieval
+docker run -p 80:8080 --name image-retrieval drakiez92/image-retrieval
 ```
 > Note: It will take a while on first run to download all images data
 
@@ -52,5 +52,5 @@ After that, build docker image and run it.
 
 ```bash
 docker build -t image-retrieval .
-docker run -p 80:80 --name image-retrieval image-retrieval
+docker run -p 80:8080 --name image-retrieval image-retrieval
 ```

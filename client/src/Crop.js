@@ -113,12 +113,12 @@ const Cropper = () => {
                         </div>
                         <Button variant="contained" onClick={getCroppedImg} style={{ marginTop: 30 }}>Search </Button>
                     </div>}
-                    {time &&<h4 style={{ fontStyle: 'italic' }}>Time query: {time}</h4>}
+                    {time && <h4 style={{ fontStyle: 'italic' }}>Time query: {time}</h4>}
                 </div>
                 <div className='right'>
                     {images &&
                         <div>
-
+                            
                             <ImageList sx={{ width: 600, height: 650, alignItems: 'center', mx: 'auto', mt: '80px', background: 'white', border: '1px solid rgb(133, 167, 196)' }} cols={3}  >
                                 {images.map((item) => (
                                     <ImageListItem key={item}>

@@ -109,3 +109,6 @@ input{
   height: 100%;
   float: right;
 }
+#controllable-states-demo{
+  display: block;
+}

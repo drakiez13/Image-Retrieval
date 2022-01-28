@@ -9,6 +9,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import LoadingButton from '@mui/lab/LoadingButton';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 function srcset(image, size, rows = 1, cols = 1) {
     return {
@@ -21,6 +23,7 @@ const Input = styled('input')({
     display: 'none',
 });
 
+const options = ['Paris', 'Oxbuild'];
 
 const Cropper = () => {
     const [loading, setLoading] = useState(false);
@@ -30,20 +33,14 @@ const Cropper = () => {
     }
 
     var flag = true
+    const [value, setValue] = useState(options[0]);
+    const [inputValue, setInputValue] = useState('');
     const [time, setTime] = useState(null)
     const [image, setImage] = useState(null)
     const [crop, setCrop] = useState({ unit: '%', width: 50 });
     const [result, setResult] = useState()
     const [images, setImages] = useState()
-    // const image = imgRef.current;
-    // test
 
-    // const imgRef = useRef(null);
-    // const onLoad = useCallback((img) => {
-    //     imgRef.current = img;
-    // }, []);
-
-    //acsc
     function getCroppedImg() {
         const canvas = document.createElement("canvas");
         const scaleX = image.naturalWidth / image.width;
@@ -65,17 +62,26 @@ const Cropper = () => {
             crop.width,
             crop.height
         );
-        
+
         const base64Image = canvas.toDataURL("image/jpeg");
         setResult(base64Image)
-        
+
         const img = { 'image': base64Image }
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(img)
         };
-        fetch('/api/search', requestOptions)
+        var http='as'
+        if(value=='Paris')
+        {
+             http='api/search/pasris'
+        }
+        else {
+             http='api/search/oxbuild'
+        }
+        console.log(http)
+        fetch('api/search', requestOptions)
             .then(response => response.json())
             .then(data => {
                 setImages(data.images)
@@ -112,14 +118,30 @@ const Cropper = () => {
                             <ReactCrop src={src} onImageLoaded={setImage} crop={crop} onChange={setCrop} className="origin-img" />
 
                         </div>
-                        
-                        <LoadingButton onClick={getCroppedImg}
-                            loading={loading}
-                            loadingIndicator="Loading..."
-                            variant="contained"
-                        >
-                            Search
-                        </LoadingButton>
+                        <div style={{display:'flex',justifyContent:'space-around'}}>
+                            <Autocomplete
+                                value={value}
+                                onChange={(event, newValue) => {
+                                    setValue(newValue);
+                                }}
+                                inputValue={inputValue}
+                                onInputChange={(event, newInputValue) => {
+                                    setInputValue(newInputValue);
+                                }}
+                                id="controllable-states-demo"
+                                options={options}
+                                sx={{ width: 300 }}
+                                renderInput={(params) => <TextField {...params} label="Choosing Data" />}
+                            />
+                            <LoadingButton onClick={getCroppedImg}
+                                loading={loading}
+                                loadingIndicator="Loading..."
+                                variant="contained"
+                                sx={{width:150}}
+                            >
+                                Search
+                            </LoadingButton>
+                        </div>
                     </div>}
 
                 </div>
@@ -131,8 +153,8 @@ const Cropper = () => {
                                 {images.map((item) => (
                                     <ImageListItem key={item}>
                                         <img
-                                            src={`/images/oxbuild_images/${item}`}
-                                            srcSet={`/images/oxbuild_images/${item}`}
+                                            src={`/images/${item}`}
+                                            srcSet={`/images/${item}`}
                                             alt={`${item}`}
 
                                             loading="lazy"

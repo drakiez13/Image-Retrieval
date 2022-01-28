@@ -106,24 +106,27 @@ const Cropper = () => {
                             Upload
                         </Button>
                     </label>
-                    {src && <div className='ori-img-cover' >
-                        <ReactCrop src={src} onImageLoaded={setImage} crop={crop} onChange={setCrop} className="origin-img" />
-                        <Button variant="contained" onClick={getCroppedImg} style={{ marginBottom: 40 }}>Search </Button>
+                    {src && <div>
+                        <div className='ori-img-cover'>
+                            <ReactCrop src={src} onImageLoaded={setImage} crop={crop} onChange={setCrop} className="origin-img" />
+
+                        </div>
+                        <Button variant="contained" onClick={getCroppedImg} style={{ marginTop: 30 }}>Search </Button>
                     </div>}
-                    {time && <h4>Time query: {time}</h4>}
+                    {time &&<h4 style={{ fontStyle: 'italic' }}>Time query: {time}</h4>}
                 </div>
                 <div className='right'>
                     {images &&
                         <div>
-                            
-                            <ImageList sx={{ width: 600, height: 650, alignItems: 'center', mx: 'auto', mt: '80px',background:'white' ,border:'1px solid rgb(133, 167, 196)'}} cols={3}  >
+
+                            <ImageList sx={{ width: 600, height: 650, alignItems: 'center', mx: 'auto', mt: '80px', background: 'white', border: '1px solid rgb(133, 167, 196)' }} cols={3}  >
                                 {images.map((item) => (
                                     <ImageListItem key={item}>
                                         <img
                                             src={`/images/oxbuild_images/${item}`}
                                             srcSet={`/images/oxbuild_images/${item}`}
                                             alt={`${item}`}
-                                            title={`${item}`}
+
                                             loading="lazy"
                                         />
                                     </ImageListItem>
@@ -131,7 +134,7 @@ const Cropper = () => {
                             </ImageList>
                         </div>}
                 </div>
-            
+
             </div>
         </div>
     )

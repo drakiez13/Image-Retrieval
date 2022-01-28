@@ -1,13 +1,14 @@
 import ReactDOM from 'react-dom';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import './Crop.css';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 function srcset(image, size, rows = 1, cols = 1) {
     return {
@@ -20,7 +21,9 @@ const Input = styled('input')({
     display: 'none',
 });
 
+
 const Cropper = () => {
+    const [loading, setLoading] = useState(false);
     const [src, selectFile] = useState(null)
     const handleFileChange = e => {
         selectFile(URL.createObjectURL(e.target.files[0]));
@@ -29,10 +32,18 @@ const Cropper = () => {
     var flag = true
     const [time, setTime] = useState(null)
     const [image, setImage] = useState(null)
-    const [crop, setCrop] = useState({});
+    const [crop, setCrop] = useState({ unit: '%', width: 50 });
     const [result, setResult] = useState()
     const [images, setImages] = useState()
+    // const image = imgRef.current;
+    // test
 
+    // const imgRef = useRef(null);
+    // const onLoad = useCallback((img) => {
+    //     imgRef.current = img;
+    // }, []);
+
+    //acsc
     function getCroppedImg() {
         const canvas = document.createElement("canvas");
         const scaleX = image.naturalWidth / image.width;
@@ -40,7 +51,7 @@ const Cropper = () => {
         canvas.width = crop.width;
         canvas.height = crop.height;
         const ctx = canvas.getContext("2d");
-
+        setLoading(true)
         // setFlag(!flag)
         flag = !flag
         ctx.drawImage(
@@ -54,10 +65,11 @@ const Cropper = () => {
             crop.width,
             crop.height
         );
+        
         const base64Image = canvas.toDataURL("image/jpeg");
         setResult(base64Image)
-
-        const img = { 'image': result }
+        
+        const img = { 'image': base64Image }
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -69,21 +81,10 @@ const Cropper = () => {
                 setImages(data.images)
                 setTime(data.time)
                 console.log(data)
-            });
+            })
+            .catch(e => { console.log(e) })
+            .finally(o => { setLoading(false) });
     }
-    // useEffect(() => {
-    //     const requestOptions = {
-    //         method: 'POST',
-    //         headers: { 'Content-Type': 'application/json' },
-    //         body: JSON.stringify(result)
-    //     };
-    //     fetch('/api/search', requestOptions)
-    //         .then(response => response.json())
-    //         .then(data => {setImages(data.images)
-    //             console.log(data)});
-
-    // }, [])
-
     return (
         <div className="container">
 
@@ -111,15 +112,22 @@ const Cropper = () => {
                             <ReactCrop src={src} onImageLoaded={setImage} crop={crop} onChange={setCrop} className="origin-img" />
 
                         </div>
-                        <Button variant="contained" onClick={getCroppedImg} style={{ marginTop: 30 }}>Search </Button>
+                        
+                        <LoadingButton onClick={getCroppedImg}
+                            loading={loading}
+                            loadingIndicator="Loading..."
+                            variant="contained"
+                        >
+                            Search
+                        </LoadingButton>
                     </div>}
-                    {time && <h4 style={{ fontStyle: 'italic' }}>Time query: {time}</h4>}
+
                 </div>
                 <div className='right'>
                     {images &&
-                        <div>
-                            
-                            <ImageList sx={{ width: 600, height: 650, alignItems: 'center', mx: 'auto', mt: '80px', background: 'white', border: '1px solid rgb(133, 167, 196)' }} cols={3}  >
+                        <div style={{ textAlign: 'center', marginTop: '40px', color: 'rgb(27, 127, 241)' }}>
+                            {time && <h3 style={{ fontStyle: 'italic' }}>Query time: {time} (s)</h3>}
+                            <ImageList sx={{ width: 600, height: 650, alignItems: 'center', mx: 'auto', mt: '30px', background: 'white', border: '1px solid rgb(133, 167, 196)' }} cols={3}  >
                                 {images.map((item) => (
                                     <ImageListItem key={item}>
                                         <img
@@ -132,6 +140,7 @@ const Cropper = () => {
                                     </ImageListItem>
                                 ))}
                             </ImageList>
+
                         </div>}
                 </div>
 

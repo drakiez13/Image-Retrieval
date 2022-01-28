@@ -62,22 +62,25 @@ input{
   } */
 .origin-img{
   
-  max-width: 100%;
-  max-height: 80%;
+  
   
   border: 3px solid rgb(133, 167, 196);
   border-radius: 5px;
   margin-top: 20px;
   margin-bottom: 40px;
 }
+.origin-img img{
+  max-height: 50vh;
+}
 .ori-img-cover{
   width: 80%;
-  height: auto;
+  height: 80%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
+  overflow:hidden
 }
 .inp-img{
   display: block;

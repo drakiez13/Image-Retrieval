@@ -75,7 +75,7 @@ const Cropper = () => {
         var http='as'
         if(value=='Paris')
         {
-             http='api/search/pasris'
+             http='api/search/paris'
         }
         else {
              http='api/search/oxbuild'

@@ -31,7 +31,7 @@ def get_oxbuild_data():
 
 def get_paris_data():
     paris_id = '1-302BDlFHcjfv5Bc4YjYYXMCsd9oifbH'
-    paris_tgz = 'paris.tgz'
+    paris_tgz = 'paris.tar'
     paris_path = 'app/public/images'
 
     print('[INFO] Checking for Paris data...')

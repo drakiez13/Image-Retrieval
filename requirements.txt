@@ -4,7 +4,7 @@ charset-normalizer==2.0.10
 click==8.0.3
 filelock==3.4.2
 Flask==2.0.2
-gdown==4.2.0
+gdown>=4.5.1
 idna==3.3
 itsdangerous==2.0.1
 Jinja2==3.0.3

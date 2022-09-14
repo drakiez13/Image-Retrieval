@@ -5,7 +5,7 @@ import os
 def get_oxbuild_data():
     oxbuild_id = '1z3nQ_p3PrYxbk0aaViTaUysPpB7Re2ER'
     oxbuild_path = 'app/public/images'
-    oxbuild_tgz = 'oxbuild.tgz'
+    oxbuild_tgz = 'oxbuild_images.tgz'
 
     print('[INFO] Checking for Oxbuild data...')
 
